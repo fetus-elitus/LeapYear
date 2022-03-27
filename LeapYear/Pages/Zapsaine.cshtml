@@ -1,0 +1,27 @@
+﻿@page
+@model LeapYear.Pages.ZapisaneModel
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <form>
+         <div class ="border p-3 mt-4">
+        <div class="row pb-2">
+            <h2 class="text-primary pl-3">Create Category</h2> 
+            <hr />
+        </div>
+        <div class="mb-3">
+            <label asp-for="PersonYear.Name"></label>
+            <input asp-for="PersonYear.Name" class="form-control"/>
+            <span asp-validation-for="PersonYear.Name" class="text-danger"></span>
+        </div>               
+         <div class="mb-3">  
+            <label asp-for="PersonYear.Year" ></label>
+            <input asp-for="PersonYear.Year" class="form-control"/>
+            <span asp-validation-for="PersonYear.Year" class="text-danger"></span>
+         </div>
+         <button type="submit" class="btn btn-primary" style="width:150px">Create</button>
+         <a asp-page="Index" class="btn btn-secondary" style="width:150px">Back to List</a>
+    </div>
+    </form>
+</div>
