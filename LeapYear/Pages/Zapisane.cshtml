@@ -1,0 +1,18 @@
+﻿@page
+@model LeapYear.Pages.ZapisaneModel
+
+<div class="text-center">
+
+    <table class="table table-bordered table-striped" style="width: 100%">
+        <tbsody>
+            @foreach(var person in @Model.people)
+            {
+                <tr>
+                    <td>
+                        @person.Name urodził się w @person.Year. Rok @person.CheckIfLeapYear()  przestępny.
+                    </td>
+                </tr>
+            }
+        </tbsody>
+    </table>
+</div>
