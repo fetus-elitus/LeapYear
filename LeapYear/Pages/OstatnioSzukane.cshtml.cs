@@ -5,19 +5,20 @@ using Newtonsoft.Json;
 
 namespace LeapYear.Pages
 {
-    public class OStatnioSzukane : PageModel
+    public class OstatnioSzukane : PageModel
     {
         private readonly PersonContext _db;
-        public List<Person> People = new();
-        public OStatnioSzukane(PersonContext db)
+        public List<Person> People { get; set; }
+        public OstatnioSzukane(PersonContext db)
         {
             _db = db;
+            People = (from person in db.people
+                     orderby person.DataRetrievedTime 
+                     descending select person).ToList();
         }
         public void OnGet()
         {
-            var Data = HttpContext.Session.GetString("Data");
-            if(Data is not null)
-                People = JsonConvert.DeserializeObject<List<Person>>(Data);
+            
         }  
         public void DeleteMember()
         {

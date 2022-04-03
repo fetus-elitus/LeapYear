@@ -9,7 +9,7 @@ public class Person
     [Display(Name = "Rok")]
     [Required(ErrorMessage ="Pole rok jest wymagane")]
     [Range(1899,2022,ErrorMessage ="Rok musi mieścić się w zakresie od 1899 do 2022")]
-    public int Year { get; set; }
+    public int? Year { get; set; }
 
 
     [Display(Name = "Imię")]
@@ -20,14 +20,12 @@ public class Person
     [MaxLength(100)]
     public string? LastName { get; set; }
     public DateTime DataRetrievedTime { get; set; }
-    [Column]
-    public bool IsLeapYear { get => CheckIfLeapYear(this.Year); private set => IsLeapYear = IsLeapYear; }
-    
-    private bool CheckIfLeapYear(int year)
+    public bool IsLeapYear { get; set; }
+    public void CheckIfLeapYear()
     {
-        if ((year % 4 == 0 || year % 400 == 0) && year % 100 != 0)
-            return true;
+        if ((this.Year % 4 == 0 || this.Year % 400 == 0) && this.Year % 100 != 0)
+            IsLeapYear = true;
         else
-            return false;
+            IsLeapYear = false;
     }
 }

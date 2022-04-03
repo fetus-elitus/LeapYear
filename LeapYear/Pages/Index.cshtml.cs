@@ -42,6 +42,7 @@ namespace LeapYear.Pages
                 }
                 else
                 {
+                    Person.CheckIfLeapYear();
                     Person.DataRetrievedTime = DateTime.Now;
                     _db.Add(Person);
                     _db.SaveChanges();

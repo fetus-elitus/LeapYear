@@ -1,0 +1,33 @@
+﻿@page
+@model LeapYear.Pages.UsunModel
+
+<div class="text-center">
+    <form method="post">
+        <input hidden asp-for="Person.PersonId" />
+        <div class ="border p-3 mt-4">
+            <div class="row pb-2">
+                <h2 class="text-primary pl-3">Delete Category</h2> 
+                <hr />
+            </div>
+            <div class="mb-3">
+                <label asp-for="Person.Name"></label>
+                <input asp-for="Person.Name" disabled class="form-control"/>
+            </div>               
+            <div class="mb-3">  
+                <label asp-for="Person.LastName" ></label>
+                <input asp-for="Person.LastName" disabled class="form-control"/>
+            </div>
+            <div class="mb-3">  
+                <label asp-for="Person.Year" ></label>
+                <input asp-for="Person.Year" disabled class="form-control"/>
+            </div>
+            <div class="mb-3">  
+                <label asp-for="Person.DataRetrievedTime" ></label>
+                <input asp-for="Person.DataRetrievedTime" disabled class="form-control"/>
+            </div>
+
+            <button type="submit" class="btn btn-danger" style="width:150px">Delete</button>
+            <a asp-page="Index" class="btn btn-secondary" style="width:150px">Back to List</a>
+        </div>
+    </form>
+</div>
