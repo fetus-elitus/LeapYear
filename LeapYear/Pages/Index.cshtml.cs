@@ -1,4 +1,5 @@
-﻿using LeapYear.Models;
+﻿using Data.DataContext;
+using Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
@@ -9,15 +10,17 @@ namespace LeapYear.Pages
     public class IndexModel : PageModel
     {
         private readonly ILogger<IndexModel> _logger;
-        public PersonYear PersonYear { get; set; }
+        private readonly PersonContext _db;
+        public Person Person { get; set; }
         public bool IsValidated { get; set; } = false;
-        public List<PersonYear> PersonYears { get; set; }
+        public List<Person> People { get; set; }
 
-        public IndexModel(ILogger<IndexModel> logger)
+        public IndexModel(ILogger<IndexModel> logger, PersonContext db)
         {
             _logger = logger;
+            _db = db;
         }
-
+        
         public void OnGet()
         {
         }
@@ -25,18 +28,25 @@ namespace LeapYear.Pages
         {
             var Data = HttpContext.Session.GetString("Data");
             if (Data is not null)
-                PersonYears = JsonConvert.DeserializeObject<List<PersonYear>>(Data);
+                People = JsonConvert.DeserializeObject<List<Person>>(Data);
 
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                if(PersonYear.Name.Where(x => "123456789".Contains(x)).Count() > 0)
+                if (Person.Name.Where(x => "123456789".Contains(x)).Count() > 0 )
                 {
-                    ModelState.AddModelError("PersonYear.Name", "Imiona nie mogą zawierać liczb");
+                    ModelState.AddModelError("Person.Name", "Imiona nie mogą zawierać liczb");
+                }
+                else if(Person.LastName.Where(x => "123456789".Contains(x)).Count() > 0)
+                {
+                    ModelState.AddModelError("Person.LastName", "Nazwiska nie mogą zawierać liczb");
                 }
                 else
                 {
-                    PersonYears.Add(PersonYear);
-                    HttpContext.Session.SetString("Data", JsonConvert.SerializeObject(PersonYears));
+                    Person.DataRetrievedTime = DateTime.Now;
+                    _db.Add(Person);
+                    _db.SaveChanges();
+                    People.Add(Person);
+                    HttpContext.Session.SetString("Data", JsonConvert.SerializeObject(People));
                     IsValidated = true;
                 }
             }

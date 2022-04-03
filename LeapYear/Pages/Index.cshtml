@@ -5,29 +5,44 @@
 {
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <script type="text/javascript">
-       toastr.success('@Model.PersonYear.Name urodził się w @Model.PersonYear.Year. To @Model.PersonYear.CheckIfLeapYear() rok przestępny.')
-    </script>
-       
+        @if (Model.Person.IsLeapYear)
+        {
+            <script type="text/javascript">
+                toastr.success('@Model.Person.Name urodził się w @Model.Person.Year. To był rok przestępny.');
+            </script>
+        }
+        else
+        {
+            <script type="text/javascript">
+                toastr.success('@Model.Person.Name urodził się w @Model.Person.Year. To nie był rok przestępny.');
+            </script>
+        }
 }
 
 <div class="text-center">
+    
     <h1 class="display-4">Witamy</h1>
+    
     <form asp-page-handler="year">
-            <div class ="border p-3 mt-4">
-        <div class="row pb-2">
-            <h2 class="text-primary pl-1">Wprowadź imię i rok</h2> 
-            <hr />
-        </div>
-        <div class="mb-3">
-            <label asp-for="PersonYear.Name"></label>
-            <input asp-for="PersonYear.Name" class="form-control"/>
-            <span asp-validation-for="PersonYear.Name" class="text-danger" style="font-weight : bold"></span>
-        </div>               
-            <div class="mb-3">  
-            <label asp-for="PersonYear.Year" ></label>
-            <input asp-for="PersonYear.Year" class="form-control"/>
-            <span asp-validation-for="PersonYear.Year" class="text-danger" style="font-weight : bold"></span>
+        <div class ="border p-3 mt-4">
+            <div class="row pb-2">
+                <h2 class="text-primary pl-1">Wprowadź imię i rok</h2> 
+                <hr />
+            </div>
+            <div class="mb-3">
+                <label asp-for="Person.Name"></label>
+                <input asp-for="Person.Name" class="form-control"/>
+                <span asp-validation-for="Person.Name" class="text-danger" style="font-weight : bold"></span>
+           <div class="mb-3"> 
+                <label asp-for="Person.LastName"></label>
+                <input asp-for="Person.LastName" class="form-control" />
+                <span asp-validation-for="Person.LastName" class="text-danger" style="font-weight : bold"></span>
+            </div>
+            </div>               
+                <div class="mb-3">  
+                <label asp-for="Person.Year" ></label>
+                <input asp-for="Person.Year" class="form-control"/>
+                <span asp-validation-for="Person.Year" class="text-danger" style="font-weight : bold"></span>
             </div>
             <button type="submit" class="btn btn-primary" style="width:150px">Zapisz</button>
         </div>
