@@ -1,23 +1,21 @@
-﻿using Data.DataContext;
 using Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Models.EntityModels;
 using Models.ViewModels;
 
 namespace LeapYear.Pages
 {
-    public class OstatnioSzukane : PageModel
+    public class ViewModel : PageModel
     {
         private readonly IPersonService _personService;
         public PersonListViewModel Records { get; set; }
-        public OstatnioSzukane(IPersonService personService)
+        public ViewModel(IPersonService personService)
         {
-          _personService = personService;
+            _personService = personService;
         }
         public void OnGet()
         {
-            Records = _personService.GetPeopleToday();
-        }  
-       
+            Records = _personService.GetPeople();
+        }
     }
 }
