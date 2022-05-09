@@ -1,6 +1,7 @@
 using Data.DataContext;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+using Services.Injection;
+using Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,16 +10,7 @@ builder.Services.AddRazorPages();
 
 builder.Services.AddDbContext<PersonContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("PeopleDatabase:SqlServer")));
 
-
-builder.Services.AddMemoryCache();
-builder.Services.AddSession(options =>
-{
-    options.IdleTimeout = TimeSpan.FromMinutes(30);
-    options.Cookie.HttpOnly = true;
-    options.Cookie.IsEssential = true;
-});
-
-
+builder.Services.AddProjectService();
 
 var app = builder.Build();
 
@@ -36,7 +28,6 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
-app.UseSession();
 
 app.MapRazorPages();
 

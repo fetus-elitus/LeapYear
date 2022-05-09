@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Data.Models;
+namespace Models.EntityModels;
 public class Person
 {
     public int PersonId { get; set; }
@@ -11,6 +11,7 @@ public class Person
     [Range(1899,2022,ErrorMessage ="Rok musi mieścić się w zakresie od 1899 do 2022")]
     public int? Year { get; set; }
 
+    public bool IsActive { get; set; }
 
     [Display(Name = "Imię")]
     [Required(ErrorMessage = "Pole imię jest wymagane")]

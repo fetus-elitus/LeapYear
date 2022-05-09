@@ -1,8 +1,8 @@
 ﻿using Data.DataContext;
-using Data.Models;
+using Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Newtonsoft.Json;
+using Models.EntityModels;
 
 namespace LeapYear.Pages
 {
@@ -10,15 +10,14 @@ namespace LeapYear.Pages
     public class IndexModel : PageModel
     {
         private readonly ILogger<IndexModel> _logger;
-        private readonly PersonContext _db;
+        private readonly IPersonService _personService;
         public Person Person { get; set; }
         public bool IsValidated { get; set; } = false;
-        public List<Person> People { get; set; }
 
-        public IndexModel(ILogger<IndexModel> logger, PersonContext db)
+        public IndexModel(ILogger<IndexModel> logger, IPersonService personService)
         {
             _logger = logger;
-            _db = db;
+            _personService = personService;
         }
         
         public void OnGet()
@@ -26,9 +25,6 @@ namespace LeapYear.Pages
         }
         public IActionResult OnPostYear()
         {
-            var Data = HttpContext.Session.GetString("Data");
-            if (Data is not null)
-                People = JsonConvert.DeserializeObject<List<Person>>(Data);
 
             if (ModelState.IsValid)
             {
@@ -36,7 +32,7 @@ namespace LeapYear.Pages
                 {
                     ModelState.AddModelError("Person.Name", "Imiona nie mogą zawierać liczb");
                 }
-                else if(Person.LastName.Where(x => "123456789".Contains(x)).Count() > 0)
+                else if(Person?.LastName?.Where(x => "123456789".Contains(x)).Count() > 0)
                 {
                     ModelState.AddModelError("Person.LastName", "Nazwiska nie mogą zawierać liczb");
                 }
@@ -44,10 +40,7 @@ namespace LeapYear.Pages
                 {
                     Person.CheckIfLeapYear();
                     Person.DataRetrievedTime = DateTime.Now;
-                    _db.Add(Person);
-                    _db.SaveChanges();
-                    People.Add(Person);
-                    HttpContext.Session.SetString("Data", JsonConvert.SerializeObject(People));
+                    _personService.AddEntry(Person);
                     IsValidated = true;
                 }
             }
