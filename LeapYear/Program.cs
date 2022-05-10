@@ -1,7 +1,7 @@
 using Data.DataContext;
 using Microsoft.EntityFrameworkCore;
-using Services.Injection;
-using Services;
+using Models.EntityModels;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,8 +9,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 
 builder.Services.AddDbContext<PersonContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("PeopleDatabase:SqlServer")));
-
-builder.Services.AddProjectService();
 
 var app = builder.Build();
 
