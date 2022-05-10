@@ -1,14 +1,27 @@
 using Data.DataContext;
 using Microsoft.EntityFrameworkCore;
+using Services.Injection;
+using Services;
+using Microsoft.AspNetCore.Identity;
 using Models.EntityModels;
-using Microsoft.AspNet.Identity.EntityFramework;
 
 var builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration.GetConnectionString("PeopleDatabase:SqlServer");;
+
+builder.Services.AddDbContext<PersonContext>(options =>
+    options.UseSqlServer(connectionString));
+builder.Services.AddIdentity<AppUser, IdentityRole>(
+    options => {
+        options.SignIn.RequireConfirmedAccount = true;
+        options.Password.RequireUppercase = false;
+        options.Password.RequireNonAlphanumeric = false;
+    })
+    .AddEntityFrameworkStores<PersonContext>().AddDefaultUI().AddDefaultTokenProviders();
+
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-
-builder.Services.AddDbContext<PersonContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("PeopleDatabase:SqlServer")));
+builder.Services.AddProjectService();
 
 var app = builder.Build();
 
@@ -24,6 +37,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseAuthentication();;
 
 app.UseAuthorization();
 

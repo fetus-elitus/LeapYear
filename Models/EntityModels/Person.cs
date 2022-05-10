@@ -12,6 +12,7 @@ public class Person
     public int? Year { get; set; }
 
     public bool IsActive { get; set; }
+    public AppUser? User { get; set; }   
 
     [Display(Name = "Imię")]
     [Required(ErrorMessage = "Pole imię jest wymagane")]
