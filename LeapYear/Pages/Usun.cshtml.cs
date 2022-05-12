@@ -1,4 +1,5 @@
 ﻿using Data.DataContext;
+using Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Models.EntityModels;
@@ -9,27 +10,22 @@ namespace LeapYear.Pages
     public class UsunModel : PageModel
     {
         public List<Person> People;
-        private readonly PersonContext _db;
+        private readonly IPersonUserService _personUserService;
         public Person Person { get; set; }
-        public UsunModel(PersonContext db)
+        public UsunModel(IPersonUserService personUserService)
         {
-            _db = db;
+            _personUserService = personUserService;
         }
         public void OnGet(int Id)
         {
-            Person = _db.People.Find(Id);
+            Person = _personUserService.GetEntry(Id);
         }  
         public IActionResult OnPost()
         {
         
-/*
-            var person = _db.People.Find(Person.PersonId);
-
-            _db.People.Remove(person);
-            _db.SaveChanges();
-            People?.RemoveAll(p => p.PersonId == person.PersonId);
+            _personUserService.RemoveEntry(Person);
             TempData["Success"] = "Osoba została usunięta pomyślnie";
-*/
+
             return RedirectToPage("OstatnioSzukane");
         }
         

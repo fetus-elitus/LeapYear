@@ -15,11 +15,14 @@
                     <td>@person.Id</td>
                     <td>@person.FullName</td>
 
-                    <td>
-                        <div class="w-75 btn-group" >
-                            <a asp-page="Usun" asp-route-id="@person.Id" class="btn btn-danger mx-2">Usuń</a>
-                        </div>
-                    </td>
+                    @if (person.IsUsers)
+                    {
+                        <td>
+                            <div class="w-75 btn-group" >
+                                <a asp-page="Usun" asp-route-id="@person.Id" class="btn btn-danger mx-2">Usuń</a>
+                            </div>
+                        </td>
+                    }
                 </tr>
             }
         </tbody>

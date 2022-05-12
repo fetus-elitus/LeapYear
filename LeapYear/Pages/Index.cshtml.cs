@@ -1,9 +1,9 @@
-﻿using Data.DataContext;
-using Interfaces;
+﻿using Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Models.EntityModels;
+using System.Security.Claims;
 
 namespace LeapYear.Pages
 {
@@ -11,24 +11,26 @@ namespace LeapYear.Pages
     public class IndexModel : PageModel
     {
         private readonly ILogger<IndexModel> _logger;
-        private readonly IPersonService _personService;
+        private readonly IPersonUserService _personUserService;
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
 
         public Person Person { get; set; }
         public bool IsValidated { get; set; } = false;
 
-        public IndexModel(ILogger<IndexModel> logger, IPersonService personService, UserManager<AppUser> user,
+        public IndexModel(ILogger<IndexModel> logger, IPersonUserService personUserService, UserManager<AppUser> user,
             SignInManager<AppUser> signIn)
         {
             _logger = logger;
-            _personService = personService;
+            _personUserService = personUserService;
             _userManager = user;
             _signInManager = signIn;
+            
         }
         
         public void OnGet()
         {
+
         }
         public IActionResult OnPostYear()
         {
@@ -47,7 +49,13 @@ namespace LeapYear.Pages
                 {
                     Person.CheckIfLeapYear();
                     Person.DataRetrievedTime = DateTime.Now;
-                    _personService.AddEntry(Person);
+
+                    var claimsIdentity = (ClaimsIdentity)User.Identity;
+                    var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+                    Person.User = _personUserService.GetUser(claim);
+                    _personUserService.AddEntry(Person);
+                    
                     IsValidated = true;
                 }
             }
